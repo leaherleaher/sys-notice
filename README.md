@@ -31,6 +31,6 @@ sys-notice
 - 创建数据库sys_notice，数据库编码为UTF-8
 - 执行doc/db.sql文件，初始化数据【按需导入表结构及数据】
 - 修改application-dev.yml，更新MySQL账号和密码
-- Eclipse、IDEA运行RenrenApplication.java，则可启动项目
+- Eclipse、IDEA运行ServiceNoticeApplication.java，则可启动项目
 - 项目访问路径：http://localhost:8082/
 - swagger文档路径：http://localhost:8082/swagger/index.html
