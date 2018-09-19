@@ -1,0 +1,389 @@
+swagger: '2.0'
+info:
+  description: 公告服务swagger-ui
+  version: 1.0.0
+  title: sys-notice
+
+basePath: "/"
+
+schemes:
+  - http
+
+#定义接口数据
+paths:
+  /notices/list:
+    get:
+      tags:
+        - 公告管理
+      summary: 获取公告列表
+      produces:
+        - application/json
+      parameters:
+        - name: page
+          description: 页码
+          in: query
+          type: integer
+          required: true
+        - name: limit
+          description: 每页条数
+          in: query
+          type: integer
+          required: true
+        - name: sidx
+          description: 排序字段
+          in: query
+          type: string
+        - name: order
+          description: 排序方式，如：asc、desc
+          in: query
+          type: string
+      responses:
+        '200':
+          description: 返回公告列表
+          schema:
+            $ref: '#/definitions/sysNoticeEntity'
+  /notices/list/{categoryId}:
+    get:
+      tags:
+        - 公告管理
+      summary: 获取公告列表（指定公告类型）
+      produces:
+        - application/json
+      parameters:
+        - name: categoryId
+          description: 公告类型Id
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回公告列表
+          schema:
+            $ref: '#/definitions/sysNoticeEntity'
+  /notices/info/{id}:
+    get:
+      tags:
+        - 公告管理
+      summary: 获取公告详情（指定公告）
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: 公告Id
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: 返回公告详情
+          schema:
+            $ref: '#/definitions/sysNoticeEntity'
+  /notices/save:
+    post:
+      tags:
+        - 公告管理
+      summary: 新建公告
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/sysNoticeSave'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /notices/update:
+    put:
+      tags:
+        - 公告管理
+      summary: 更新公告
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/sysNoticeEdit'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /notices/examine/{id}:
+    patch:
+      tags:
+      - 公告管理
+      summary: 审核公告
+      produces:
+      - application/json
+      parameters:
+        - name: id
+          description: 公告id
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /notices/hide/{id}:
+    patch:
+      tags:
+      - 公告管理
+      summary: 隐藏公告
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 公告id
+        in: path
+        type: string
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /notices/expire/{id}:
+    patch:
+      tags:
+      - 公告管理
+      summary: 过期公告
+      produces:
+      - application/json
+      parameters:
+      - name: id
+        description: 公告id
+        in: path
+        type: string
+        required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+  /notices/categories/list:
+    get:
+      tags:
+        - 公告类型管理
+      summary: 获取公告类型列表
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: 返回公告类型列表
+          schema:
+            $ref: '#/definitions/noticeCategoryEntity'
+  /notices/categories/save:
+    post:
+      tags:
+      - 公告类型管理
+      summary: 新建公告类型
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 管理员对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/noticeCategorySave'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /notices/categories/update:
+    put:
+      tags:
+        - 公告类型管理
+      summary: 更新公告类型
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          description: 公告类型对象
+          in: body
+          type: string
+          schema:
+            $ref: '#/definitions/noticeCategoryEntity'
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+  /notices/categories/delete/{id}:
+    delete:
+      tags:
+        - 公告类型管理
+      summary: 删除公告类型
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          description: 公告类型id
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/R'
+
+#定义数据模型
+definitions:
+  sysNoticeEntity:
+    type: object
+    properties:
+      id:
+        description: 公告id
+        type: string
+      categoryId:
+        description: 公告类型id
+        type: integer
+        format: int64
+      categoryCode:
+        description: 公告类型代码
+        type: string
+      noticeStatus:
+        description: 公告状态
+        type: string
+      noticeTitleZh:
+        description: 公告标题（英文）
+        type: string
+      noticeTitleCn:
+        description: 公告标题（中文）
+        type: string
+      noticeTextZh:
+        description: 公告正文（英文）
+        type: string
+      noticeTextCn:
+        description: 公告正文（中文）
+        type: string
+      isExpire:
+        description: 是否过期
+        type: integer
+        format: int64
+      isHide:
+        description: 是否隐藏
+        type: integer
+        format: int64
+      createBy:
+        description: 创建人
+        type: integer
+        format: int64
+      createDate:
+        description: 创建时间
+        type: string
+        format: date-time
+      updateBy:
+        description: 最后更新人
+        type: integer
+        format: int64
+      updateDate:
+        description: 最后更新时间
+        type: string
+        format: date-time
+  sysNoticeSave:
+    type: object
+    properties:
+      categoryId:
+        description: 公告类型id
+        type: integer
+        format: int64
+      categoryCode:
+        description: 公告类型代码
+        type: string
+      noticeTitleZh:
+        description: 公告标题（英文）
+        type: string
+      noticeTitleCn:
+        description: 公告标题（中文）
+        type: string
+      noticeTextZh:
+        description: 公告正文（英文）
+        type: string
+      noticeTextCn:
+        description: 公告正文（中文）
+        type: string
+  sysNoticeEdit:
+    type: object
+    properties:
+      id:
+        description: 公告id
+        type: string
+        format: int64
+      categoryId:
+        description: 公告类型id
+        type: string
+        format: int64
+      categoryCode:
+        description: 公告类型代码
+        type: string
+      noticeStatus:
+        description: 公告状态
+        type: integer
+        format: int64
+      noticeTitleZh:
+        description: 公告标题（英文）
+        type: string
+      noticeTitleCn:
+        description: 公告标题（中文）
+        type: string
+      noticeTextZh:
+        description: 公告正文（英文）
+        type: string
+      noticeTextCn:
+        description: 公告正文（中文）
+        type: string
+      isExpire:
+        description: 是否过期
+        type: integer
+        format: int64
+      isHide:
+        description: 是否隐藏
+        type: integer
+        format: int64
+  noticeCategoryEntity:
+    type: object
+    properties:
+      id:
+        description: 公告类型id
+        type: string
+      categoryCode:
+        description: 公告类型代码
+        type: string
+      categoryDescZh:
+        description: 公告类型名称（中文）
+        type: string
+      categoryDescCn:
+        description: 公告类型名称（英文）
+        type: string
+  noticeCategorySave:
+    type: object
+    properties:
+      categoryCode:
+        description: 公告类型代码
+        type: string
+      categoryDescZh:
+        description: 公告类型名称（中文）
+        type: string
+      categoryDescCn:
+        description: 公告类型名称（英文）
+        type: string
+  R:
+    type: object
+    properties:
+      code:
+        description: 状态码 0：成功  非0：失败
+        type: integer
+        format: int32
+      msg:
+        description: 失败原因
+        type: string

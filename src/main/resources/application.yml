@@ -1,0 +1,17 @@
+# server
+server:
+  port: 8082
+
+# database
+spring:
+  datasource:
+    url:  jdbc:log4jdbc:mysql://127.0.0.1:3306/notice
+    driver-class-name: net.sf.log4jdbc.DriverSpy
+    username: root
+    password: 123456
+
+# jpa
+  jpa:
+    hibernate:
+      ddl-auto: update  # 自动处理
+    show-sql: true  #打印sql
