@@ -1,0 +1,72 @@
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2018/9/19 16:29:39                           */
+/*==============================================================*/
+
+
+-- drop index notice_category_code_N1 on notice_category;
+
+-- drop table if exists notice_category;
+
+-- drop index sys_notice_categorycode_N1 on sys_notice;
+
+-- drop table if exists sys_notice;
+
+/*==============================================================*/
+/* Table: notice_category                                       */
+/*==============================================================*/
+create table notice_category
+(
+   id                   varchar(32) not null comment '主键id',
+   category_code        varchar(128) not null comment '类型代码',
+   category_desc_zh     varchar(256) not null comment '类型名称（中文）',
+   category_desc_cn     varchar(256) not null comment '类型名称（英文）',
+   create_by            int comment '创建人',
+   create_date          datetime comment '创建日期',
+   update_by            int comment '最后修改人',
+   update_date          datetime comment '最后修改日期',
+   primary key (id)
+);
+
+alter table notice_category comment '系统公告类型表';
+
+/*==============================================================*/
+/* Index: notice_category_code_N1                               */
+/*==============================================================*/
+create unique index notice_category_code_N1 on notice_category
+(
+   category_code
+);
+
+/*==============================================================*/
+/* Table: sys_notice                                            */
+/*==============================================================*/
+create table sys_notice
+(
+   id                   varchar(32) not null comment '主键id',
+   category_id          varchar(32) not null comment '公告类型id',
+   category_code        varchar(256) not null comment '公告类型code',
+   notice_status        tinyint not null comment '公告状态(0:未发布，1：已发布)',
+   notice_title_zh      varchar(1000) not null comment '公告标题（中文）',
+   notice_title_cn      varchar(1000) not null comment '公告标题（英文）',
+   notice_text_zh       longtext not null comment '公告正文（中文）',
+   notice_text_cn       longtext not null comment '公告正文（英文）',
+   is_expire            tinyint not null default 0 comment '是否过期',
+   is_hide              tinyint not null default 0 comment '是否隐藏',
+   create_by            int not null comment '创建人',
+   create_date          datetime not null comment '创建时间',
+   update_by            int comment '最后更新人',
+   update_date          datetime comment '最后更新时间',
+   primary key (id)
+);
+
+alter table sys_notice comment '系统公告表';
+
+/*==============================================================*/
+/* Index: sys_notice_categorycode_N1                            */
+/*==============================================================*/
+create index sys_notice_categorycode_N1 on sys_notice
+(
+   category_id
+);
+

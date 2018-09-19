@@ -47,4 +47,6 @@ dependencies {
     compile 'joda-time:joda-time'
     testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test', version:'2.0.4.RELEASE'
     compile 'com.googlecode.log4jdbc:log4jdbc:1.2'
+    //集成数据源 druid
+    compile 'com.alibaba:druid:1.0.9'
 }
